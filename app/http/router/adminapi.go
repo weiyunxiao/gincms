@@ -43,18 +43,16 @@ func AdminApiRouter(r *gin.Engine) {
 	/************机构部门管理 end***************/
 
 	/************角色管理***************/
-	routeNeedJwt.POST("sys/role", sysController.RoleCtl.AddRole)      //添加一个角色
-	routeNeedJwt.PUT("sys/role", sysController.RoleCtl.UpdateRole)    //更新
-	routeNeedJwt.DELETE("sys/role", sysController.RoleCtl.DelRole)    //删除
-	routeNeedJwt.GET("sys/role", sysController.RoleCtl.GetRole)       //获取一个角色
-	routeNeedJwt.GET("sys/role_list", sysController.RoleCtl.RoleList) //角色列表
-	routeNeedJwt.GET("sys/role_page", sysController.RoleCtl.RolePage) //角色带分页列表
-
+	routeNeedJwt.POST("sys/role", sysController.RoleCtl.AddRole)               //添加一个角色
+	routeNeedJwt.PUT("sys/role", sysController.RoleCtl.UpdateRole)             //更新
+	routeNeedJwt.DELETE("sys/role", sysController.RoleCtl.DelRole)             //删除
+	routeNeedJwt.GET("sys/role", sysController.RoleCtl.GetRole)                //获取一个角色
+	routeNeedJwt.GET("sys/role_list", sysController.RoleCtl.RoleList)          //角色列表
+	routeNeedJwt.GET("sys/role_page", sysController.RoleCtl.RolePage)          //角色带分页列表
 	routeNeedJwt.GET("sys/role_menu", sysController.RoleCtl.RoleMenu)          //添加编辑角色时，显示的所有系统菜单
 	routeNeedJwt.GET("sys/role_user_page", sysController.RoleCtl.RoleUserPage) //某个角色拥有的用户分页列表
 	routeNeedJwt.POST("sys/role_user", sysController.RoleCtl.AddRoleUser)      //某个角色关联多个用户的操作
 	routeNeedJwt.DELETE("sys/role_user", sysController.RoleCtl.DelRoleUser)    //移除某个角色下的用户
-
 	/************角色管理 end***************/
 	/************用户管理***************/
 	routeNeedJwt.POST("sys/user", sysController.UserCtl.AddUser)      //添加一个用户
@@ -63,6 +61,15 @@ func AdminApiRouter(r *gin.Engine) {
 	routeNeedJwt.DELETE("sys/user", sysController.UserCtl.DelUser)    //删除用户
 	routeNeedJwt.GET("sys/user_page", sysController.UserCtl.UserPage) //用户带分页列表
 	/************用户管理 end***************/
+
+	/************菜单管理***************/
+	routeNeedJwt.GET("sys/menu_list", sysController.MenuCtl.MenuList) //系统所有菜单-树结构列表
+	routeNeedJwt.DELETE("sys/menu", sysController.MenuCtl.DelMenu)    //删除单条
+	routeNeedJwt.POST("sys/menu", sysController.MenuCtl.AddMenu)      //添加单条
+	routeNeedJwt.GET("sys/menu", sysController.MenuCtl.GetMenu)       //获取单条
+	routeNeedJwt.PUT("sys/menu", sysController.MenuCtl.UpdateMenu)    //更新单条
+
+	/************菜单管理 end***************/
 
 	{
 		route.GET("/system_dir", controller.FileCtl.DirList)

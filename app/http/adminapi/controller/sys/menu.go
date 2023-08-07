@@ -1,14 +1,99 @@
 package sys
 
 import (
+	"gincms/app/common/typescom"
 	"gincms/app/http/adminapi/service/sys"
+	"gincms/app/http/adminapi/types"
 	"gincms/pkg/jsonresp"
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/cast"
 )
 
 var MenuCtl = new(menuCtl)
 
 type menuCtl struct {
+}
+
+// AddMenu 添加
+func (m *menuCtl) AddMenu(c *gin.Context) {
+	var req types.MenuAddSaveReq
+	if err := c.ShouldBind(&req); err != nil {
+		jsonresp.JsonFailParame(c, err)
+		return
+	}
+
+	err := sys.MenuService.AddMenu(c, &req)
+	if err != nil {
+		jsonresp.JsonFailWithMessage(err.Error(), c)
+		return
+	}
+
+	jsonresp.JsonOk(c)
+}
+
+// GetMenu 获取单条信息
+func (m *menuCtl) GetMenu(c *gin.Context) {
+	var req typescom.IDReq
+	if err := c.ShouldBind(&req); err != nil {
+		jsonresp.JsonFailParame(c, err)
+		return
+	}
+
+	oneData, err := sys.MenuService.GetMenu(c, &req)
+	if err != nil {
+		jsonresp.JsonFailWithMessage(err.Error(), c)
+		return
+	}
+	jsonresp.JsonOkWithData(oneData, c)
+}
+
+// UpdateMenu 更新
+func (m *menuCtl) UpdateMenu(c *gin.Context) {
+	var req types.MenuAddSaveReq
+	if err := c.ShouldBind(&req); err != nil {
+		jsonresp.JsonFailParame(c, err)
+		return
+	}
+	if req.Id <= 0 {
+		jsonresp.JsonFailWithMessage("请指定数据", c)
+		return
+	}
+
+	err := sys.MenuService.UpdateMenu(c, &req)
+	if err != nil {
+		jsonresp.JsonFailWithMessage(err.Error(), c)
+		return
+	}
+	jsonresp.JsonOk(c)
+}
+
+// MenuList 系统所有菜单-树结构列表
+func (m *menuCtl) MenuList(c *gin.Context) {
+	typeParam := cast.ToInt(c.DefaultQuery("type", "0"))
+	menuList, err := sys.MenuService.MenuList(c, typeParam)
+	if err != nil {
+		jsonresp.JsonFailWithMessage(err.Error(), c)
+		return
+	}
+	jsonresp.JsonOkWithData(&menuList, c)
+
+}
+
+// DelMenu 删除单条
+func (m *menuCtl) DelMenu(c *gin.Context) {
+	var req typescom.IDReq
+	if err := c.ShouldBind(&req); err != nil {
+		jsonresp.JsonFailParame(c, err)
+		return
+	}
+
+	err := sys.MenuService.DelMenu(c, &req)
+	if err != nil {
+		jsonresp.JsonFailWithMessage(err.Error(), c)
+		return
+	}
+	jsonresp.JsonOk(c)
+
 }
 
 // Authority 获取用户的所有权限

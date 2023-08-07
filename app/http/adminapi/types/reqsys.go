@@ -88,3 +88,17 @@ type DelRoleUserReq struct {
 	RoleId int    `json:"roleId" form:"roleId" binding:"required"`
 	IdArr  []uint `json:"id_arr" form:"id_arr" binding:"required,min=1"`
 }
+
+// MenuAddSaveReq 菜单的添加与修改请求
+type MenuAddSaveReq struct {
+	Id         uint   `json:"id" form:"name"`
+	Type       int8   `json:"type" form:"name"`
+	Name       string `json:"name" form:"name" binding:"required"`
+	Pid        uint   `json:"pid" form:"name"`
+	ParentName string `json:"parentName" form:"name"`
+	Url        string `json:"url" form:"name"`
+	Authority  string `json:"authority" form:"name"`
+	Sort       int32  `json:"sort" form:"name"`
+	Icon       string `json:"icon" form:"name"`
+	OpenStyle  int8   `json:"openStyle" form:"openStyle"`
+}
