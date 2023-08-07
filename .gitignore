@@ -1,0 +1,13 @@
+# Binaries for programs and plugins
+/.idea
+/log
+/upload
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+config.yaml
+./gincms
