@@ -18,11 +18,10 @@ func AdminApiRouter(r *gin.Engine) {
 	/************无需jwt验证 end***************/
 
 	/************后台系统进入前端需要调用的***************/
-	routeNeedJwt.POST("sys/auth_logout", sysController.AuthCtl.Logout)       //用户退出
-	routeNeedJwt.GET("sys/user_info", sysController.UserCtl.Info)            //登录进入后，获取用户信息
-	routeNeedJwt.GET("sys/menu_authority", sysController.MenuCtl.Authority)  //获取用户的权限
-	routeNeedJwt.GET("sys/menu_nav", sysController.MenuCtl.Nav)              //获取用户的菜单
-	routeNeedJwt.GET("sys/dict_type_all", sysController.DictCtl.DictTypeAll) //获取系统的字典数据
+	routeNeedJwt.POST("sys/auth_logout", sysController.AuthCtl.Logout)      //用户退出
+	routeNeedJwt.GET("sys/user_info", sysController.UserCtl.Info)           //登录进入后，获取用户信息
+	routeNeedJwt.GET("sys/menu_authority", sysController.MenuCtl.Authority) //获取用户的权限
+	routeNeedJwt.GET("sys/menu_nav", sysController.MenuCtl.Nav)             //获取用户的菜单
 	/************后台系统进入前端需要调用的 end***************/
 
 	/************岗位管理***************/
@@ -68,8 +67,13 @@ func AdminApiRouter(r *gin.Engine) {
 	routeNeedJwt.POST("sys/menu", sysController.MenuCtl.AddMenu)      //添加单条
 	routeNeedJwt.GET("sys/menu", sysController.MenuCtl.GetMenu)       //获取单条
 	routeNeedJwt.PUT("sys/menu", sysController.MenuCtl.UpdateMenu)    //更新单条
-
 	/************菜单管理 end***************/
+
+	/************字典管理***************/
+	routeNeedJwt.GET("sys/dict_type_all", sysController.DictCtl.DictTypeAll) //获取系统的字典数据
+	route.GET("/sys/dict_type_page", sysController.DictCtl.TypePage)         //获取列表分页
+
+	/************字典管理 end***************/
 
 	{
 		route.GET("/system_dir", controller.FileCtl.DirList)

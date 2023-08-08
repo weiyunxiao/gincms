@@ -102,3 +102,10 @@ type MenuAddSaveReq struct {
 	Icon       string `json:"icon" form:"name"`
 	OpenStyle  int8   `json:"openStyle" form:"openStyle"`
 }
+
+// DictPageReq 用户分页列表请求
+type DictPageReq struct {
+	DictName string `json:"dictName" form:"dictName"`
+	DictType string `json:"dictType" form:"dictType"`
+	typescom.PageOrderCommonReq
+}

@@ -10,4 +10,4 @@
 *.test
 *.out
 config.yaml
-./gincms
+/gincms

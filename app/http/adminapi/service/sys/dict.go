@@ -2,6 +2,7 @@ package sys
 
 import (
 	"gincms/app"
+	"gincms/app/http/adminapi/types"
 	"gincms/app/model"
 	"gincms/pkg"
 	"github.com/gin-gonic/gin"
@@ -12,6 +13,28 @@ import (
 var DictService = new(dictService)
 
 type dictService struct {
+}
+
+// TypePage 分页数据
+func (u *dictService) TypePage(c *gin.Context, req *types.DictPageReq) (total int64, list []model.SysDictType, err error) {
+	sortStr := pkg.SortStr(req.Order, req.Asc, "id")
+	list = make([]model.SysDictType, 0)
+
+	query := app.DB().Model(&model.SysDictType{}).Where("deleted=0")
+	if len(req.DictName) > 0 {
+		query.Where("dict_name like ?", "%"+req.DictName+"%")
+	}
+	if len(req.DictType) > 0 {
+		query.Where("dict_type like ?", "%"+req.DictType+"%")
+	}
+
+	err = query.Count(&total).Select("*").Order(sortStr).
+		Scopes(pkg.PaginateScope(req.Page, req.Limit)).
+		Find(&list).Error
+	if err != nil {
+		app.Logger.Error("sql错误", zap.String("reqKey", pkg.GetReqKey(c)), zap.Error(err))
+	}
+	return
 }
 
 // DictTypeAll 获取所有字典数据
