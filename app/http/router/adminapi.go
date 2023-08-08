@@ -70,9 +70,20 @@ func AdminApiRouter(r *gin.Engine) {
 	/************菜单管理 end***************/
 
 	/************字典管理***************/
-	routeNeedJwt.GET("sys/dict_type_all", sysController.DictCtl.DictTypeAll) //获取系统的字典数据
-	route.GET("/sys/dict_type_page", sysController.DictCtl.TypePage)         //获取列表分页
+	//字典一级类型
+	routeNeedJwt.GET("sys/dict_type_all", sysController.DictCtl.DictTypeAll)    //获取系统的字典数据
+	routeNeedJwt.GET("/sys/dict_type_page", sysController.DictCtl.DictTypePage) //获取列表分页
+	routeNeedJwt.DELETE("/sys/dict_type", sysController.DictCtl.DelDictType)    //删除多条
+	routeNeedJwt.POST("sys/dict_type", sysController.DictCtl.AddDictType)       //添加单条
+	routeNeedJwt.GET("sys/dict_type", sysController.DictCtl.GetDictType)        //获取单条
+	routeNeedJwt.PUT("sys/dict_type", sysController.DictCtl.UpdateDictType)     //更新单条
 
+	//字典二级数据列表
+	routeNeedJwt.GET("/sys/dict_data_page", sysController.DictCtl.DictDataPage) //获取列表分页
+	routeNeedJwt.DELETE("/sys/dict_data", sysController.DictCtl.DelDictData)    //获取列表分页
+	routeNeedJwt.POST("/sys/dict_data", sysController.DictCtl.AddDictData)      //添加单条
+	routeNeedJwt.GET("/sys/dict_data", sysController.DictCtl.GetDictData)       //获取单条
+	routeNeedJwt.PUT("/sys/dict_data", sysController.DictCtl.UpdateDictData)    //更新单条
 	/************字典管理 end***************/
 
 	{

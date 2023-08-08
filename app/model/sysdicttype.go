@@ -9,7 +9,7 @@ type SysDictType struct {
 	DictType   string          `gorm:"column:dict_type;not null;comment: '字典类型';type:varchar(100)" json:"dictType"`
 	DictName   string          `gorm:"column:dict_name;not null;comment: '字典名称';type:varchar(255)" json:"dictName"`
 	DictSource int8            `gorm:"column:dict_source;not null;default:0;comment: '来源  0：字典数据  1：动态SQL';type:tinyint(4)" json:"dictSource"`
-	DictSql    string          `gorm:"column:dict_sql;not null;default:'';comment: '动态SQL';type:varchar(500)" json:"dict_sql"`
+	DictSql    string          `gorm:"column:dict_sql;not null;default:'';comment: '动态SQL';type:varchar(500)" json:"dictSql"`
 	Remark     string          `gorm:"column:remark;not null;default:'';comment: '备注';type:varchar(255)" json:"remark"`
 	Sort       int32           `gorm:"column:sort;not null;default:0;comment: '排序';type:int(11)" json:"sort"`
 	TenantID   int64           `gorm:"column:tenant_id;not null;default:0;comment: '租户ID';type:bigint(20)" json:"tenant_id"`

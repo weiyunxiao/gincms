@@ -91,15 +91,15 @@ type DelRoleUserReq struct {
 
 // MenuAddSaveReq 菜单的添加与修改请求
 type MenuAddSaveReq struct {
-	Id         uint   `json:"id" form:"name"`
-	Type       int8   `json:"type" form:"name"`
+	Id         uint   `json:"id" form:"id"`
+	Type       int8   `json:"type" form:"type"`
 	Name       string `json:"name" form:"name" binding:"required"`
-	Pid        uint   `json:"pid" form:"name"`
-	ParentName string `json:"parentName" form:"name"`
-	Url        string `json:"url" form:"name"`
-	Authority  string `json:"authority" form:"name"`
-	Sort       int32  `json:"sort" form:"name"`
-	Icon       string `json:"icon" form:"name"`
+	Pid        uint   `json:"pid" form:"pid"`
+	ParentName string `json:"parentName" form:"parentName"`
+	Url        string `json:"url" form:"url"`
+	Authority  string `json:"authority" form:"authority"`
+	Sort       int32  `json:"sort" form:"sort"`
+	Icon       string `json:"icon" form:"icon"`
 	OpenStyle  int8   `json:"openStyle" form:"openStyle"`
 }
 
@@ -108,4 +108,32 @@ type DictPageReq struct {
 	DictName string `json:"dictName" form:"dictName"`
 	DictType string `json:"dictType" form:"dictType"`
 	typescom.PageOrderCommonReq
+}
+
+// DictTypeAddSaveReq 字典类型添加修改请求
+type DictTypeAddSaveReq struct {
+	Id         uint   `json:"id" form:"id"`
+	DictType   string `json:"dictType" form:"dictType" binding:"max=50"`
+	DictName   string `json:"dictName" form:"dictName" binding:"max=50"`
+	Sort       int32  `json:"sort" form:"sort" binding:"max=50000"`
+	DictSource int8   `json:"dictSource" form:"dictSource" binding:"max=10"`
+	DictSql    string `json:"dictSql" form:"dictSql" binding:"max=450"`
+	Remark     string `json:"remark" form:"remark" binding:"max=450"`
+}
+
+// DictDataPageReq 字典二级数据分页请求
+type DictDataPageReq struct {
+	DictTypeId int `json:"dictTypeId" form:"dictTypeId" binding:"required"`
+	typescom.PageOrderCommonReq
+}
+
+// DictDataAddSaveReq 字典二级数据添加修改请求
+type DictDataAddSaveReq struct {
+	Id         uint   `json:"id" form:"id"`
+	DictTypeId int    `json:"dictTypeId" form:"dictTypeId" binding:"required"`
+	DictLabel  string `json:"dictLabel" form:"dictLabel" binding:"required,max=200"`
+	DictValue  string `json:"dictValue" form:"dictValue" binding:"required,max=200"`
+	LabelClass string `json:"labelClass" form:"labelClass" binding:"max=80"`
+	Sort       int32  `json:"sort" form:"sort"`
+	Remark     string `json:"remark" form:"remark" binding:"max=450"`
 }

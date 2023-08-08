@@ -60,6 +60,7 @@ func (m *menuService) GetMenu(c *gin.Context, req *typescom.IDReq) (one model.Sy
 	return
 }
 
+// UpdateMenu 更新单条
 func (m *menuService) UpdateMenu(c *gin.Context, req *types.MenuAddSaveReq) (err error) {
 	var oldData model.SysMenu
 	err = app.DB().Where("id=?", req.Id).Take(&oldData).Error
