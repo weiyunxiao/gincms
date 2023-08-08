@@ -1,6 +1,10 @@
 App:
   Name: gincms
   Env: public #开发环境:dev,正式环境:public
+  IsDemo：false #演示展示不可以更改数据
+  IsDemoWhiteList: #演示允许访问的白名单
+    - "post:/admin_api/sys/auth_login"
+    - "post:/admin_api/sys/auth_logout"
   LogPath: "log" #日志存放目录
   OssType: "local" #文件上传类型
   UploadDir: "./upload" #配置上传目录

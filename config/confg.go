@@ -8,8 +8,10 @@ type Config struct {
 	DBDefineList map[string]DB `mapstructure:"DBDefineList"`
 }
 type App struct {
-	Name string `mapstructure:"Name"`
-	Env  string `mapstructure:"Env"`
+	Name            string   `mapstructure:"Name"`
+	Env             string   `mapstructure:"Env"`
+	IsDemo          bool     `mapstructure:"IsDemo"`          //演示展示不可以更改数据
+	IsDemoWhiteList []string `mapstructure:"IsDemoWhiteList"` //演示允许访问的白名单
 
 	LogPath            string `mapstructure:"LogPath"`
 	OssType            string `mapstructure:"OssType"`
