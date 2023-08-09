@@ -137,3 +137,21 @@ type DictDataAddSaveReq struct {
 	Sort       int32  `json:"sort" form:"sort"`
 	Remark     string `json:"remark" form:"remark" binding:"max=450"`
 }
+
+// ParamsAddSaveReq 参数管理添加修改请求
+type ParamsAddSaveReq struct {
+	Id         uint   `json:"id" form:"id"`
+	ParamName  string `json:"paramName" form:"paramName" binding:"required,max=90"`
+	ParamType  int8   `json:"paramType" form:"paramType" binding:"max=1"`
+	ParamKey   string `json:"paramKey" form:"paramKey" binding:"required,max=90"`
+	ParamValue string `json:"paramValue" form:"paramValue" binding:"required,max=1900"`
+	Remark     string `json:"remark" form:"dictTypeId" binding:"max=200"`
+}
+
+// ParamsPageReq 参数管理分页请求
+type ParamsPageReq struct {
+	ParamType  string `json:"paramType" form:"paramType" binding:"max=1"`
+	ParamKey   string `json:"paramKey" form:"paramKey" binding:"max=100"`
+	ParamValue string `json:"paramValue" form:"paramValue" binding:"max=200"`
+	typescom.PageOrderCommonReq
+}

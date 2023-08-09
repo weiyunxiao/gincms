@@ -86,6 +86,15 @@ func AdminApiRouter(r *gin.Engine) {
 	routeNeedJwt.PUT("/sys/dict_data", sysController.DictCtl.UpdateDictData)    //更新单条
 	/************字典管理 end***************/
 
+	/************参数管理***************/
+	routeNeedJwt.POST("/sys/params", sysController.ParamsCtl.AddParams)      //添加单条
+	routeNeedJwt.GET("/sys/params", sysController.ParamsCtl.GetParams)       //获取单条
+	routeNeedJwt.PUT("/sys/params", sysController.ParamsCtl.UpdateParams)    //更新单条
+	routeNeedJwt.GET("/sys/params_page", sysController.ParamsCtl.ParamsPage) //获取列表分页
+	routeNeedJwt.DELETE("/sys/params", sysController.ParamsCtl.DelParams)    //删除
+
+	/************参数管理 end***************/
+
 	{
 		route.GET("/system_dir", controller.FileCtl.DirList)
 	}
