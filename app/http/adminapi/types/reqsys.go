@@ -155,3 +155,11 @@ type ParamsPageReq struct {
 	ParamValue string `json:"paramValue" form:"paramValue" binding:"max=200"`
 	typescom.PageOrderCommonReq
 }
+
+// LogLoginLogoutPageReq 登录登出日志分页请求
+type LogLoginLogoutPageReq struct {
+	Username string `json:"username" form:"username" binding:"max=50"`
+	Address  string `json:"address" form:"address" binding:"max=30"`
+	Status   string `json:"status" form:"status" binding:"max=1"`
+	typescom.PageOrderCommonReq
+}

@@ -22,11 +22,10 @@ type App struct {
 }
 
 type Http struct {
-	UseCrossMiddleware  bool   `mapstructure:"UseCrossMiddleware"` //是否开启跨域中间件，nginx解决的话此可关闭
-	LoginCaptchaEnabled bool   `mapstructure:"LoginCaptchaEnabled"`
-	AdminApiPort        string `mapstructure:"AdminApiPort"`
-	JwtAccessSecret     string `mapstructure:"JwtAccessSecret"`
-	JwtAccessExpire     int64  `mapstructure:"JwtAccessExpire"`
+	UseCrossMiddleware bool   `mapstructure:"UseCrossMiddleware"` //是否开启跨域中间件，nginx解决的话此可关闭
+	AdminApiPort       string `mapstructure:"AdminApiPort"`
+	JwtAccessSecret    string `mapstructure:"JwtAccessSecret"`
+	JwtAccessExpire    int64  `mapstructure:"JwtAccessExpire"`
 }
 
 type PathInfo struct {

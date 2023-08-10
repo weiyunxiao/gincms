@@ -2,6 +2,7 @@ package controller
 
 import (
 	"gincms/app"
+	"gincms/app/common/comservice"
 	"gincms/app/http/adminapi/service"
 	"gincms/app/http/adminapi/types"
 	"gincms/pkg/jsonresp"
@@ -17,13 +18,16 @@ var PublicCtl = new(publicCtl)
 type publicCtl struct {
 }
 
+const CaptchaParamKey = "LOGIN_CAPTCHA"
+
 // 当开启多服务器部署时，替换下面的配置，使用redis共享存储验证码
 // var store = captcha.NewDefaultRedisStore()
 var store = base64Captcha.DefaultMemStore
 
 // LoginCaptchaEnabled 是否打开验证码登录
 func (p *publicCtl) LoginCaptchaEnabled(c *gin.Context) {
-	jsonresp.JsonOkWithData(app.Config.Http.LoginCaptchaEnabled, c)
+	isEnabled := service.PublicService.LoginCaptchaEnabled(CaptchaParamKey)
+	jsonresp.JsonOkWithData(isEnabled, c)
 }
 
 // Captcha 验证码
@@ -78,8 +82,9 @@ func (p *publicCtl) Login(c *gin.Context) {
 		jsonresp.JsonFailParame(c, err)
 		return
 	}
-	if app.Config.Http.LoginCaptchaEnabled {
+	if service.PublicService.LoginCaptchaEnabled(CaptchaParamKey) {
 		if !store.Verify(req.CaptchaKey, req.Captcha, true) {
+			comservice.LogLoginAndLogout(c, 2, req.UserName)
 			jsonresp.JsonFailWithMessage("验证码错误", c)
 			return
 		}
@@ -87,10 +92,12 @@ func (p *publicCtl) Login(c *gin.Context) {
 
 	token, expireUnix, _ := service.PublicService.Login(&req, c)
 	if len(token) == 0 {
+		comservice.LogLoginAndLogout(c, 3, req.UserName)
 		jsonresp.JsonFailWithMessage("用户登录失败,请检查账号及密码，及用户是否被禁用", c)
 		return
 	}
-
+	//登录成功
+	comservice.LogLoginAndLogout(c, 0, req.UserName)
 	jsonresp.JsonOkWithData(gin.H{
 		"access_token":   token,
 		"expire_at_unix": expireUnix,

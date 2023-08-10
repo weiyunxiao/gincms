@@ -13,7 +13,6 @@ App:
 Http:
   AdminApiPort: ":8066" #端口
   UseCrossMiddleware: true #是否使用跨域中间件
-  LoginCaptchaEnabled: true #登录时是否开启验证码
   JwtAccessSecret: "zmyt7vzrGh" #jwt加密盐
   JwtAccessExpire: 36000 #jwt多少秒后过期
 AdminCaptcha: #登录时验证码配置

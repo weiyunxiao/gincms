@@ -92,8 +92,11 @@ func AdminApiRouter(r *gin.Engine) {
 	routeNeedJwt.PUT("/sys/params", sysController.ParamsCtl.UpdateParams)    //更新单条
 	routeNeedJwt.GET("/sys/params_page", sysController.ParamsCtl.ParamsPage) //获取列表分页
 	routeNeedJwt.DELETE("/sys/params", sysController.ParamsCtl.DelParams)    //删除
-
 	/************参数管理 end***************/
+
+	/************日志管理模块***************/
+	routeNeedJwt.GET("/sys/log_login_page", sysController.LogCtl.LoginLogoutPage) //获取登录登出日志列表分页
+	/************日志管理模块 end***************/
 
 	{
 		route.GET("/system_dir", controller.FileCtl.DirList)
