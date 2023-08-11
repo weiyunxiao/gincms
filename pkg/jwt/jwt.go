@@ -133,8 +133,12 @@ func (jwt *JWT) parseTokenString(tokenString string) (*jwtpkg.Token, error) {
 // Authorization:Bearer xxxxx
 func (jwt *JWT) getTokenFromHeader(c *gin.Context) (string, error) {
 	authHeader := c.Request.Header.Get("Authorization")
-	if authHeader == "" {
-		return "", ErrHeaderEmpty
+	if len(authHeader) == 0 {
+		//去get参数中取
+		authHeader = c.DefaultQuery("access_token", "")
+		if len(authHeader) == 0 {
+			return "", ErrHeaderEmpty
+		}
 	}
 	//// 按空格分割
 	//parts := strings.SplitN(authHeader, " ", 2)

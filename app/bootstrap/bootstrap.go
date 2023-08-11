@@ -60,6 +60,14 @@ func InitConfig() {
 // InitPathInfo 设置相关目录变量
 func InitPathInfo() {
 	app.Config.PathInfo.Root = filepath.Dir(filepath.Dir(util.CurDir()))
+	//以下代码创建上传目录
+	if app.Config.App.OssType == "local" {
+		if !fsutil.IsDir(app.Config.App.UploadDir) {
+			if err := os.MkdirAll(app.Config.App.UploadDir, 0755); err != nil {
+				log.Fatalln("创建上传目录失败:", err.Error())
+			}
+		}
+	}
 }
 
 // InitDB 数据库的初始化

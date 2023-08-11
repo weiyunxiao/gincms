@@ -98,7 +98,15 @@ func AdminApiRouter(r *gin.Engine) {
 	routeNeedJwt.GET("/sys/log_login_page", sysController.LogCtl.LoginLogoutPage) //获取登录登出日志列表分页
 	/************日志管理模块 end***************/
 
+	/************附件记录模块***************/
+	routeNeedJwt.GET("/sys/attachment_page", sysController.FileRecordCtl.AttachmentPage) //上传文件分页记录
+	routeNeedJwt.DELETE("/sys/attachment", sysController.FileRecordCtl.DelAttachment)    //删除附件上传记录信息
+	/************附件记录模块 end***************/
+
 	{
-		route.GET("/system_dir", controller.FileCtl.DirList)
+		routeNeedJwt.POST("/sys/file_upload", sysController.FileManageCtl.UploadFile) //上传文件
+		//下载文件
+		//http: //127.0.0.1:8066/down_file?filePath=upload/2023-08-11/16917282224898124277.png
+		routeNeedJwt.GET("down_file", sysController.FileManageCtl.DownFile) //下载文件
 	}
 }

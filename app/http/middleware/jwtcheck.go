@@ -18,6 +18,8 @@ func JWTCheck() gin.HandlerFunc {
 			return
 		} else {
 			c.Set("uid", cast.ToInt64(jwtStruct.UserID))
+			//记录排除GET的操作日志
+			
 		}
 		c.Next()
 	}

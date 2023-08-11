@@ -7,6 +7,8 @@ import (
 )
 
 func InitRoute(r *gin.Engine) {
+	r.Static("upload", "upload") //上传文件都可以访问
+
 	r.GET("ping", func(c *gin.Context) {
 		c.String(200, "ok")
 	})

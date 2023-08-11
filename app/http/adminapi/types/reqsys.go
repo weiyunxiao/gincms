@@ -163,3 +163,10 @@ type LogLoginLogoutPageReq struct {
 	Status   string `json:"status" form:"status" binding:"max=1"`
 	typescom.PageOrderCommonReq
 }
+
+// AttachmentPageReq 附件记录分页请求
+type AttachmentPageReq struct {
+	Name     string `json:"name" form:"name" binding:"max=50"`
+	Platform string `json:"platform" form:"platform" binding:"max=30"`
+	typescom.PageOrderCommonReq
+}

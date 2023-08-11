@@ -6,8 +6,8 @@ App:
     - "post:/admin_api/sys/auth_login"
     - "post:/admin_api/sys/auth_logout"
   LogPath: "log" #日志存放目录
-  OssType: "local" #文件上传类型
-  UploadDir: "./upload" #配置上传目录
+  OssType: "local" #文件上传类型,local代码本地
+  UploadDir: "upload" #配置上传目录
   LogParamShowClient: false #前端调用接是地,参数错误详细内容是否回显给前端
   LogParamErr: false #是否记录参数错误日志(warn级别)
 Http:
