@@ -68,13 +68,14 @@ func (f *fileManageCtl) DirList(c *gin.Context) {
 		jsonresp.JsonFailWithMessage(err.Error(), c)
 		return
 	}
-
 	jsonresp.JsonOkWithData(list, c)
 }
 
 func (f *fileManageCtl) DirAndFileList(c *gin.Context) {
+	dirName := c.DefaultQuery("dirName", "")
+	baseDir := app.Config.App.UploadDir + "/" + dirName
+
 	fileType := app.Config.App.OssType
-	baseDir := app.Config.App.UploadDir
 	var fileManage = filepkg.CreateFileManage(fileType)
 	list, err := fileManage.DirAndFileList(baseDir)
 	if err != nil {

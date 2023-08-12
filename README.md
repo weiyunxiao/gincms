@@ -18,9 +18,9 @@ gincms的宗旨是让初/中级go语言爱好者,快速使用gincms开发相关�
 
 
 ## 部分截图
-
-![logo](http://s.gincms.com/gincms-static/1.png)
-![logo](http://s.gincms.com/gincms-static/2.png)
+![截图](imgdemo/11.png)
+![截图](imgdemo/22.png)
+![截图](imgdemo/33.png)
 #### 软件架构
 软件架构说明(todo)
 

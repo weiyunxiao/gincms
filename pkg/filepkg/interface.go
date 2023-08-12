@@ -10,7 +10,7 @@ import (
 )
 
 type FileManageServiceInterface interface {
-	DirList(parentDir string) ([]string, error)                        //获取目录
+	DirList(parentDir string) ([]map[string]any, error)                //获取目录
 	DirAndFileList(parentDir string) ([]map[string]interface{}, error) //获取目录及文件
 	UploadFile(c *gin.Context, file *multipart.FileHeader) (filePath string, fileName string, size int64, sizeTip string, err error)
 }

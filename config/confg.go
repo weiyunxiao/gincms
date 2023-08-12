@@ -22,6 +22,7 @@ type App struct {
 }
 
 type Http struct {
+	WebSiteUrl            string `mapstructure:"WebSiteUrl"`
 	UseCrossMiddleware    bool   `mapstructure:"UseCrossMiddleware"` //是否开启跨域中间件，nginx解决的话此可关闭
 	AdminApiPort          string `mapstructure:"AdminApiPort"`
 	JwtAccessSecret       string `mapstructure:"JwtAccessSecret"`

@@ -15,15 +15,18 @@ import (
 type LocalFileManage struct{}
 
 // DirList 获取目录
-func (f *LocalFileManage) DirList(parentDir string) (dirs []string, err error) {
-	dirs = make([]string, 0)
+func (f *LocalFileManage) DirList(parentDir string) (dirs []map[string]any, err error) {
+	dirs = make([]map[string]any, 0)
 	files, err := os.ReadDir(parentDir)
 	if err != nil {
 		return
 	}
 	for i := 0; i < len(files); i++ {
 		if files[i].IsDir() {
-			dirs = append(dirs, files[i].Name())
+			dir := make(map[string]any, 0)
+			dir["id"] = files[i].Name()
+			dir["label"] = files[i].Name()
+			dirs = append(dirs, dir)
 		}
 	}
 	return
@@ -36,10 +39,14 @@ func (f *LocalFileManage) DirAndFileList(parentDir string) (files []map[string]i
 	if err != nil {
 		return
 	}
+	webUrl := app.Config.Http.WebSiteUrl
 	for i := 0; i < len(fList); i++ {
 		info := make(map[string]interface{})
+		info["id"] = i   //前端配合用
+		info["url"] = "" //前端
+
 		info["is_dir"] = false
-		info["name"] = fList[i].Name()
+		info["fileName"] = fList[i].Name()
 		info["size"] = ""
 
 		if fList[i].IsDir() {
@@ -50,6 +57,7 @@ func (f *LocalFileManage) DirAndFileList(parentDir string) (files []map[string]i
 				err = fmt.Errorf("读取文件%s,发生错误:%v", fList[i].Name(), errF)
 				return
 			}
+			info["url"] = webUrl + "/" + parentDir + "/" + fList[i].Name() //前端
 			info["size"] = fmtutil.DataSize(uint64(f.Size()))
 		}
 		files = append(files, info)
