@@ -90,16 +90,19 @@ func (p *publicCtl) Login(c *gin.Context) {
 		}
 	}
 
-	token, expireUnix, _ := service.PublicService.Login(&req, c)
+	token, expireUnix, refreshToken, refreshExpireAtUnix, _ := service.PublicService.Login(&req, c)
 	if len(token) == 0 {
 		comservice.LogLoginAndLogout(c, 3, req.UserName)
 		jsonresp.JsonFailWithMessage("用户登录失败,请检查账号及密码，及用户是否被禁用", c)
 		return
 	}
-	//登录成功
+	//登录成功-记录日志
 	comservice.LogLoginAndLogout(c, 0, req.UserName)
+
 	jsonresp.JsonOkWithData(gin.H{
-		"access_token":   token,
-		"expire_at_unix": expireUnix,
+		"access_token":           token,
+		"expire_at_unix":         expireUnix,
+		"refresh_token":          refreshToken,
+		"refresh_expire_at_unix": refreshExpireAtUnix,
 	}, c)
 }

@@ -28,7 +28,7 @@ func (p publicService) LoginCaptchaEnabled(keyName string) bool {
 }
 
 // Login 用户登录逻辑
-func (p *publicService) Login(req *types.LoginReq, c *gin.Context) (token string, expireAtUnix int64, err error) {
+func (p *publicService) Login(req *types.LoginReq, c *gin.Context) (token string, expireAtUnix int64, refresh_token string, refresh_expireAtUnix int64, err error) {
 	var user model.SysUser
 	err = app.DB().Model(&model.SysUser{}).Select("id,username,password").
 		Where("username=? and status=1 and deleted=0", req.UserName).Take(&user).Error
@@ -46,6 +46,7 @@ func (p *publicService) Login(req *types.LoginReq, c *gin.Context) (token string
 	}
 
 	jwtObj := jwt.NewJWT()
-	token, expireAtUnix = jwtObj.IssueToken(user.ID)
+	token, expireAtUnix = jwtObj.IssueToken(c, user.ID)
+	refresh_token, refresh_expireAtUnix = jwtObj.IssueRefreshToken(c, user.ID)
 	return
 }

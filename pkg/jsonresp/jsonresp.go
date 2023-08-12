@@ -9,9 +9,10 @@ import (
 )
 
 const (
-	success_code    = 0
-	param_erro_code = 400 //参数错误
-	common_err_code = 7
+	success_code      = 0
+	param_erro_code   = 400 //参数错误
+	common_err_code   = 7
+	RefreshToken_code = 409 //与前端对接，刷新token验证token时为这个验证码返回
 )
 
 type baseJsonResp struct {

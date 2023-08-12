@@ -1,8 +1,10 @@
 package sys
 
 import (
+	"gincms/app"
 	"gincms/app/common/typescom"
 	"gincms/app/http/adminapi/service/sys"
+	"gincms/pkg/filepkg"
 	"gincms/pkg/jsonresp"
 	"github.com/gookit/goutil/fsutil"
 	"strings"
@@ -54,4 +56,31 @@ func (f *fileManageCtl) DownFile(c *gin.Context) {
 	c.Header("Content-Transfer-Encoding", "binary")
 	c.File(filePath)
 	return
+}
+
+// DirList 目录列表
+func (f *fileManageCtl) DirList(c *gin.Context) {
+	fileType := app.Config.App.OssType
+	baseDir := app.Config.App.UploadDir
+	var fileManage = filepkg.CreateFileManage(fileType)
+	list, err := fileManage.DirList(baseDir)
+	if err != nil {
+		jsonresp.JsonFailWithMessage(err.Error(), c)
+		return
+	}
+
+	jsonresp.JsonOkWithData(list, c)
+}
+
+func (f *fileManageCtl) DirAndFileList(c *gin.Context) {
+	fileType := app.Config.App.OssType
+	baseDir := app.Config.App.UploadDir
+	var fileManage = filepkg.CreateFileManage(fileType)
+	list, err := fileManage.DirAndFileList(baseDir)
+	if err != nil {
+		jsonresp.JsonFailWithMessage(err.Error(), c)
+		return
+	}
+
+	jsonresp.JsonOkWithData(list, c)
 }

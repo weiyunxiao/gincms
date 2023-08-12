@@ -15,14 +15,18 @@ func AdminApiRouter(r *gin.Engine) {
 	route.GET("sys/auth_captcha_enabled", controller.PublicCtl.LoginCaptchaEnabled) //是否开启登录需要验证码
 	route.GET("sys/auth_captcha", controller.PublicCtl.Captcha)                     //验证码
 	route.POST("sys/auth_login", controller.PublicCtl.Login)                        //登录
+	route.POST("sys/auth_refreshToken", sysController.AuthCtl.RefreshToken)         //刷新用户token
 	/************无需jwt验证 end***************/
 
 	/************后台系统进入前端需要调用的***************/
-	routeNeedJwt.POST("sys/auth_logout", sysController.AuthCtl.Logout)      //用户退出
 	routeNeedJwt.GET("sys/user_info", sysController.UserCtl.Info)           //登录进入后，获取用户信息
 	routeNeedJwt.GET("sys/menu_authority", sysController.MenuCtl.Authority) //获取用户的权限
 	routeNeedJwt.GET("sys/menu_nav", sysController.MenuCtl.Nav)             //获取用户的菜单
 	/************后台系统进入前端需要调用的 end***************/
+
+	/************auth相关***************/
+	routeNeedJwt.POST("sys/auth_logout", sysController.AuthCtl.Logout) //用户退出
+	/************auth相关 end***************/
 
 	/************岗位管理***************/
 	routeNeedJwt.POST("sys/post", sysController.PostCtl.AddPost)      //添加一个岗位
@@ -103,10 +107,15 @@ func AdminApiRouter(r *gin.Engine) {
 	routeNeedJwt.DELETE("/sys/attachment", sysController.FileRecordCtl.DelAttachment)    //删除附件上传记录信息
 	/************附件记录模块 end***************/
 
+	/************文件管理模块***************/
+	routeNeedJwt.GET("/sys/fileManage_dir_list", sysController.FileManageCtl.DirList)            //文件夹列表
+	routeNeedJwt.GET("/sys/fileManage_dirFile_list", sysController.FileManageCtl.DirAndFileList) //文件夹与文件列表
+	/************文件管理模块 end***************/
+
 	{
 		routeNeedJwt.POST("/sys/file_upload", sysController.FileManageCtl.UploadFile) //上传文件
 		//下载文件
 		//http: //127.0.0.1:8066/down_file?filePath=upload/2023-08-11/16917282224898124277.png
-		routeNeedJwt.GET("down_file", sysController.FileManageCtl.DownFile) //下载文件
+		routeNeedJwt.POST("down_file", sysController.FileManageCtl.DownFile) //下载文件
 	}
 }

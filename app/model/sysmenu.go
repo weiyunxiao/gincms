@@ -21,7 +21,7 @@ type SysMenu struct {
 	Updater    int64           `gorm:"column:updater;not null;default:0;comment: '更新者';type:bigint(20)" json:"updater"`
 	UpdateTime carbon.DateTime `gorm:"column:update_time;not null;comment: '更新时间';type:datetime" json:"update_time"`
 	Children   []SysMenu       `gorm:"foreignKey:Pid;references:ID" json:"children"`
-	ParentName string          `gorm:"-"`
+	ParentName string          `gorm:"-" json:"parentName"`
 	ParentMenu *SysMenu        `gorm:"foreignKey:Pid;references:ID" json:"parentMenu"`
 }
 

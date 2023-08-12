@@ -5,6 +5,7 @@ import (
 	"gincms/pkg/jsonresp"
 	"github.com/gin-gonic/gin"
 	"github.com/samber/lo"
+	"net/http"
 	"strings"
 )
 
@@ -18,7 +19,11 @@ func CheckDemoEnv() gin.HandlerFunc {
 				return strings.ToLower(item) == method+":"+reqPath
 			})
 			if !isAllow {
-				jsonresp.JsonFailWithMessage("演示环境无法进行此操作", c)
+				if c.DefaultQuery("action", "") == "downFile" {
+					c.String(http.StatusForbidden, "演示环境无法下载文件")
+				} else {
+					jsonresp.JsonFailWithMessage("演示环境无法进行此操作", c)
+				}
 				c.Abort()
 				return
 			}

@@ -55,7 +55,7 @@ func (m *menuService) GetMenu(c *gin.Context, req *typescom.IDReq) (one model.Sy
 		return
 	}
 	if one.ParentMenu != nil {
-		one.ParentName = one.ParentMenu.ParentName
+		one.ParentName = one.ParentMenu.Name
 	}
 	return
 }
