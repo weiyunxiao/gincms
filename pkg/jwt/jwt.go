@@ -2,6 +2,7 @@ package jwt
 
 import (
 	"errors"
+	"fmt"
 	"gincms/app"
 	"gincms/pkg"
 	"github.com/gin-gonic/gin"
@@ -51,16 +52,15 @@ func NewJWT() *JWT {
 }
 
 // ParserToken 解析 Token，中间件中调用
-func (jwt *JWT) ParserToken(c *gin.Context, tokenString string) (*JWTCustomClaims, error) {
-	if len(tokenString) == 0 {
-		tokenStr, parseErr := jwt.getTokenFromHeader(c)
-		if parseErr != nil {
-			return nil, parseErr
-		}
-		tokenString = tokenStr
+func (jwt *JWT) ParserToken(c *gin.Context) (*JWTCustomClaims, error) {
+	tokenStr, parseErr := jwt.getTokenFromHeader(c)
+	if parseErr != nil {
+		return nil, parseErr
 	}
+	//todo
+	fmt.Println(tokenStr)
 	// 1. 调用 jwt 库解析用户传参的 Token
-	token, err := jwt.parseTokenString(tokenString)
+	token, err := jwt.parseTokenString(tokenStr)
 
 	// 2. 解析出错
 	if err != nil {
@@ -172,10 +172,9 @@ func (jwt *JWT) parseTokenString(tokenString string) (*jwtpkg.Token, error) {
 // getTokenFromHeader 使用 jwtpkg.ParseWithClaims 解析 Token
 // Authorization:Bearer xxxxx
 func (jwt *JWT) getTokenFromHeader(c *gin.Context) (string, error) {
-	authHeader := c.Request.Header.Get("Authorization")
+	authHeader := c.DefaultQuery("access_token", "")
 	if len(authHeader) == 0 {
-		//去get参数中取
-		authHeader = c.DefaultQuery("access_token", "")
+		authHeader = c.Request.Header.Get("Authorization")
 		if len(authHeader) == 0 {
 			return "", ErrHeaderEmpty
 		}

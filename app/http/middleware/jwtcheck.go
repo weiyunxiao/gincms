@@ -12,7 +12,7 @@ import (
 func JWTCheck() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		jwtObj := jwt.NewJWT()
-		if jwtStruct, err := jwtObj.ParserToken(c, ""); err != nil {
+		if jwtStruct, err := jwtObj.ParserToken(c); err != nil {
 			jsonresp.JsonResult(http.StatusUnauthorized, gin.H{}, err.Error(), c)
 			c.Abort()
 			return

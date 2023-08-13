@@ -103,7 +103,9 @@ func (d *paramsService) ParamsPage(c *gin.Context, req *types.ParamsPageReq) (to
 	sortStr := pkg.SortStr(req.Order, req.Asc, "id")
 	list = make([]model.SysParams, 0)
 
-	err = app.DB().Model(&model.SysParams{}).Where("deleted=0").Count(&total).Select("*").Order(sortStr).Find(&list).Error
+	err = app.DB().Model(&model.SysParams{}).Where("deleted=0").Count(&total).Select("*").Order(sortStr).
+		Scopes(pkg.PaginateScope(req.Page, req.Limit)).
+		Find(&list).Error
 	if err != nil {
 		app.Logger.Error("sql错误", zap.String("reqKey", pkg.GetReqKey(c)), zap.Error(err))
 	}

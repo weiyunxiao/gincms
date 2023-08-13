@@ -3,14 +3,10 @@ package router
 import (
 	"gincms/app/http/adminapi/controller"
 	sysController "gincms/app/http/adminapi/controller/sys"
-	"gincms/app/http/middleware"
 	"github.com/gin-gonic/gin"
 )
 
-func AdminApiRouter(r *gin.Engine) {
-	route := r.Group("admin_api")
-	routeNeedJwt := r.Group("admin_api", middleware.JWTCheck()) //需要jwt验证
-
+func AdminApiRouter(route *gin.RouterGroup, routeNeedJwt *gin.RouterGroup) {
 	/************无需jwt验证***************/
 	route.GET("sys/auth_captcha_enabled", controller.PublicCtl.LoginCaptchaEnabled) //是否开启登录需要验证码
 	route.GET("sys/auth_captcha", controller.PublicCtl.Captcha)                     //验证码
@@ -100,6 +96,7 @@ func AdminApiRouter(r *gin.Engine) {
 
 	/************日志管理模块***************/
 	routeNeedJwt.GET("/sys/log_login_page", sysController.LogCtl.LoginLogoutPage) //获取登录登出日志列表分页
+	routeNeedJwt.GET("/sys/operate_log_page", sysController.LogCtl.OperatePage)   //获取用户操作日志分页
 	/************日志管理模块 end***************/
 
 	/************附件记录模块***************/

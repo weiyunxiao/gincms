@@ -16,5 +16,19 @@ func InitRoute(r *gin.Engine) {
 	if app.Config.App.IsDemo {
 		r.Use(middleware.CheckDemoEnv())
 	}
-	AdminApiRouter(r)
+	/************后台基础管理系统***************/
+	route := r.Group("admin_api")
+	routeNeedJwt := r.Group("admin_api", middleware.JWTCheck()) //需要jwt验证
+	UseOperateMiddle(routeNeedJwt)
+	/************后台基础管理系统 end***************/
+	//不是演示环境，并且开启了记录非get操作日志记录
+	AdminApiRouter(route, routeNeedJwt)
+}
+
+// UseOperateMiddle 是否使用日志记录非get操作
+func UseOperateMiddle(routeNeedJwt *gin.RouterGroup) *gin.RouterGroup {
+	if !app.Config.App.IsDemo && app.Config.App.IsOpenRecordOperate {
+		routeNeedJwt.Use(middleware.OperationRecord())
+	}
+	return routeNeedJwt
 }

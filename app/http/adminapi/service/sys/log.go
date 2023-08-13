@@ -29,9 +29,48 @@ func (d *logService) LoginLogoutPage(c *gin.Context, req *types.LogLoginLogoutPa
 	if len(req.Status) > 0 {
 		query.Where("status=?", cast.ToInt8(req.Status))
 	}
-	err = query.Count(&total).Select("*").Order(sortStr).Find(&list).Error
+	err = query.Count(&total).Select("*").Order(sortStr).
+		Scopes(pkg.PaginateScope(req.Page, req.Limit)).
+		Find(&list).Error
 	if err != nil {
 		app.Logger.Error("sql错误", zap.String("reqKey", pkg.GetReqKey(c)), zap.Error(err))
+	}
+	return
+}
+
+// OperatePage 获取用户操作日志分页
+func (d *logService) OperatePage(c *gin.Context, req *types.OperateLogPageReq) (total int64, list []model.SysLogOperate, err error) {
+	sortStr := pkg.SortStr(req.Order, req.Asc, "id")
+	list = make([]model.SysLogOperate, 0)
+	query := app.DB().Model(&model.SysLogOperate{})
+	if len(req.RealName) > 0 {
+		var uid int64
+		err = app.DB().Model(&model.SysUser{}).Select("username").
+			Where("username=?", req.RealName).Limit(1).Scan(&uid).Error
+		if err != nil {
+			app.Logger.Error("sql错误", zap.String("reqKey", pkg.GetReqKey(c)), zap.Error(err))
+			return
+		}
+		query.Where("user_id=?", uid)
+	}
+	if len(req.ReqUri) > 0 {
+		query.Where("req_uri like ?", "%"+req.ReqUri+"%")
+	}
+	err = query.Count(&total).Joins("OperateUser", app.DB().Select("username")).Order(sortStr).
+		Scopes(pkg.PaginateScope(req.Page, req.Limit)).
+		Find(&list).Error
+	if err != nil {
+		app.Logger.Error("sql错误", zap.String("reqKey", pkg.GetReqKey(c)), zap.Error(err))
+	}
+	return
+}
+
+// AddOperateLog 添加操作日志
+func (d *logService) AddOperateLog(c *gin.Context, req *model.SysLogOperate) (err error) {
+	err = app.DB().Create(req).Error
+	if err != nil {
+		app.Logger.Error("sql错误", zap.String("reqKey", pkg.GetReqKey(c)), zap.Error(err))
+		return
 	}
 	return
 }

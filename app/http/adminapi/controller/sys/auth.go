@@ -14,14 +14,8 @@ type authCtl struct {
 
 // RefreshToken 刷新token
 func (a *authCtl) RefreshToken(c *gin.Context) {
-	refreshToken := c.DefaultQuery("refreshToken", "")
-	if len(refreshToken) == 0 {
-		jsonresp.JsonFailParameWithMsg("请提供刷新token参数", c)
-		return
-	}
 	jwtObj := jwt.NewJWT()
-	jwtStruct, err := jwtObj.ParserToken(c, refreshToken)
-
+	jwtStruct, err := jwtObj.ParserToken(c)
 	if err != nil || !jwtStruct.IsFreshToken {
 		jsonresp.JsonResult(jsonresp.RefreshToken_code, gin.H{}, err.Error(), c)
 		return

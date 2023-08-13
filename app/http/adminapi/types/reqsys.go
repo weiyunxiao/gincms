@@ -164,6 +164,13 @@ type LogLoginLogoutPageReq struct {
 	typescom.PageOrderCommonReq
 }
 
+// OperateLogPageReq 操作日志分页请求
+type OperateLogPageReq struct {
+	RealName string `json:"realName" form:"realName" binding:"max=50"`
+	ReqUri   string `json:"reqUri" form:"reqUri" binding:"max=100"`
+	typescom.PageOrderCommonReq
+}
+
 // AttachmentPageReq 附件记录分页请求
 type AttachmentPageReq struct {
 	Name     string `json:"name" form:"name" binding:"max=50"`

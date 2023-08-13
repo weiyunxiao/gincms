@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// 附件上传记录控制器
 var FileRecordCtl = new(fileRecordCtl)
 
 type fileRecordCtl struct {

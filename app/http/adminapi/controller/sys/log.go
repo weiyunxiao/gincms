@@ -31,3 +31,22 @@ func (l *logCtl) LoginLogoutPage(c *gin.Context) {
 		List:  list,
 	}, c)
 }
+
+// OperatePage 获取用户操作日志分页
+func (l *logCtl) OperatePage(c *gin.Context) {
+	var req types.OperateLogPageReq
+	if err := c.ShouldBind(&req); err != nil {
+		jsonresp.JsonFailParame(c, err)
+		return
+	}
+	total, list, err := sys.LogService.OperatePage(c, &req)
+	if err != nil {
+		jsonresp.JsonFailWithMessage(err.Error(), c)
+		return
+	}
+
+	jsonresp.JsonOkWithData(typescom.PageDataResp{
+		Total: total,
+		List:  list,
+	}, c)
+}

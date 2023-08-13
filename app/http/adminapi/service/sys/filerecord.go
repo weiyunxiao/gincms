@@ -28,7 +28,9 @@ func (d *fileRecordService) AttachmentPage(c *gin.Context, req *types.Attachment
 		query.Where("platform=?", req.Platform)
 	}
 
-	err = query.Count(&total).Select("*").Order(sortStr).Find(&list).Error
+	err = query.Count(&total).Select("*").Order(sortStr).
+		Scopes(pkg.PaginateScope(req.Page, req.Limit)).
+		Find(&list).Error
 	if err != nil {
 		app.Logger.Error("sql错误", zap.String("reqKey", pkg.GetReqKey(c)), zap.Error(err))
 	}
