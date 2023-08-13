@@ -1,12 +1,40 @@
-# gincms
+<div align="center">
 
-#### 介绍
+![logo](imgdemo/logo.png)
+
+<p align="center">
+	<a href="https://github.com/gin-gonic/gin" target="_blank">
+		<img src="https://img.shields.io/badge/Gin-v1.9.1-green" alt="Gin">
+	</a>
+	<a href="https://gorm.io/zh_CN/docs/" target="_blank">
+		<img src="https://img.shields.io/badge/Gorm-v1.25.2-green" alt="Gorm">
+	</a>
+	<a href="https://v3.vuejs.org/" target="_blank">
+		<img src="https://img.shields.io/badge/Vue.js-3.x-green" alt="Vue">
+	</a>
+	<a href="https://element-plus.gitee.io/#/zh-CN/component/changelog" target="_blank">
+		<img src="https://img.shields.io/badge/element--plus-latest-blue" alt="element plus">
+	</a>
+</p>
+
+<h1>Gincms</h1>
+</div>
+
+## 介绍
+
 gincms是一个前后端分离的开源系统.它(**开源/免费/可商业**)
 
-gincms的宗旨是让初/中级go语言爱好者,快速使用gincms开发相关应用.例如:
-- 后台管理系统(例如:客户关系系统,OA管理系统...)
-- cms管理后台,包含前端(如:企业官网,资讯网站...)
-- 博客系统,包含前端博客展示,后台博客内容管理
+>后端使用go语言,gin框架,gorm
+gincms的宗旨是让初/中级go语言爱好者,快速使用gincms开发相关应用.
+### 系统将开源包括如下模块
+- 后台管理系统(基础rbac)
+- cms管理后台,包含前端(如:企业官网,资讯网站...)-----开发中
+- 博客系统,包含前端博客展示,后台博客内容管理-------开发中
+
+> 后台管理系统是前后端分离，它的前端是基于maku-admin，
+maku-admin是基于Vue3、TypeScript、Element Plus、Vue Router、Pinia、Axios、i18n、Vite等开发的后台管理，使用门槛极低，采用MIT开源协议，完全免费开源且终身免费，可免费用于商业项目等场景。
+
+
 
 无论是个人、团队、或是企业，都能够使用gincms助力相关应用的开发
 ####  演示和文档
@@ -42,7 +70,7 @@ cd gincms
 ```
 cp config.yaml.example config.ymal
 ```
-4.  运行程序,(==注意有无错误信息==)
+4.  运行程序,(**注意有无错误信息**)
 ```
 go run ./main.go
 ```

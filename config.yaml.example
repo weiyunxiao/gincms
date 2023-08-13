@@ -11,7 +11,7 @@ App:
   LogParamShowClient: false #前端调用接是地,参数错误详细内容是否回显给前端
   LogParamErr: false #是否记录参数错误日志(warn级别)
 Http:
-  WebSiteUrl: "http://localhost:8066" #应用访问根url
+  WebSiteUrl: "http://localhost:8066" #api服务外网访问的url-目前用于upload文件夹中的图片链接拼接
   AdminApiPort: ":8066" #端口
   UseCrossMiddleware: true #是否使用跨域中间件
   JwtAccessSecret: "zmyt7vzrGh" #jwt加密盐
