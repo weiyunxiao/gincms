@@ -1,6 +1,7 @@
 package sys
 
 import (
+	"gincms/app/common/auth"
 	"gincms/app/common/typescom"
 	"gincms/app/http/adminapi/service/sys"
 	"gincms/app/http/adminapi/types"
@@ -162,7 +163,7 @@ func (m *menuCtl) Authority(c *gin.Context) {
 
 // Nav  获取用户的菜单列表
 func (m *menuCtl) Nav(c *gin.Context) {
-	menuList, err := sys.MenuService.Nav(c)
+	menuList, err := auth.GetUserMenu(c, c.GetInt64("uid"), "id,pid,name,url,icon,sort,create_time")
 	if err != nil {
 		jsonresp.JsonFailWithMessage("获取菜单出错", c)
 		return
