@@ -2,7 +2,6 @@ package jwt
 
 import (
 	"errors"
-	"fmt"
 	"gincms/app"
 	"gincms/pkg"
 	"github.com/gin-gonic/gin"
@@ -57,8 +56,6 @@ func (jwt *JWT) ParserToken(c *gin.Context) (*JWTCustomClaims, error) {
 	if parseErr != nil {
 		return nil, parseErr
 	}
-	//todo
-	fmt.Println(tokenStr)
 	// 1. 调用 jwt 库解析用户传参的 Token
 	token, err := jwt.parseTokenString(tokenStr)
 

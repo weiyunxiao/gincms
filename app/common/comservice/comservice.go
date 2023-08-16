@@ -10,14 +10,15 @@ import (
 )
 
 // GetParam 获取数据表中一个配置的参数数据
-func GetParam(keyName string) (value string, ok bool) {
-	err := app.DB().Model(&model.SysParams{}).Select("param_value").
+func GetParam(keyName string) (value string, err error) {
+	err = app.DB().Model(&model.SysParams{}).Select("param_value").
 		Where("param_key=? and deleted=0", keyName).
 		Limit(1).Scan(&value).Error
 	if err != nil {
-		app.Logger.Error("sql错误222", zap.Error(err))
+		app.Logger.Error("sql错误", zap.Error(err))
+		return
 	}
-	return value, len(value) > 0
+	return
 }
 
 // LogLoginAndLogout 登录退出日志记录

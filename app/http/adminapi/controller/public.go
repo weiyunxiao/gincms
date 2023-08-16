@@ -26,8 +26,13 @@ var store = base64Captcha.DefaultMemStore
 
 // LoginCaptchaEnabled 是否打开验证码登录
 func (p *publicCtl) LoginCaptchaEnabled(c *gin.Context) {
-	isEnabled := service.PublicService.LoginCaptchaEnabled(CaptchaParamKey)
-	jsonresp.JsonOkWithData(isEnabled, c)
+	var isEnableCaptchaValue string
+	var err error
+	if isEnableCaptchaValue, err = comservice.GetParam(CaptchaParamKey); err != nil {
+		jsonresp.JsonFailWithMessage("验证码是否打开无法检测", c)
+		return
+	}
+	jsonresp.JsonOkWithData(cast.ToBool(isEnableCaptchaValue), c)
 }
 
 // Captcha 验证码
@@ -82,7 +87,14 @@ func (p *publicCtl) Login(c *gin.Context) {
 		jsonresp.JsonFailParame(c, err)
 		return
 	}
-	if service.PublicService.LoginCaptchaEnabled(CaptchaParamKey) {
+
+	var isEnableCaptchaValue string
+	if isEnableCaptchaValue, err = comservice.GetParam(CaptchaParamKey); err != nil {
+		jsonresp.JsonFailWithMessage("验证码是否打开检测错误", c)
+		return
+	}
+
+	if cast.ToBool(isEnableCaptchaValue) {
 		if !store.Verify(req.CaptchaKey, req.Captcha, true) {
 			comservice.LogLoginAndLogout(c, 2, req.UserName)
 			jsonresp.JsonFailWithMessage("验证码错误", c)

@@ -7,7 +7,6 @@ import (
 	"gincms/app/http/adminapi/types"
 	"gincms/pkg/jsonresp"
 	"github.com/gin-gonic/gin"
-	"github.com/spf13/cast"
 )
 
 var MenuCtl = new(menuCtl)
@@ -70,8 +69,7 @@ func (m *menuCtl) UpdateMenu(c *gin.Context) {
 
 // MenuList 系统所有菜单-树结构列表
 func (m *menuCtl) MenuList(c *gin.Context) {
-	typeParam := cast.ToInt(c.DefaultQuery("type", "0"))
-	menuList, err := sys.MenuService.MenuList(c, typeParam)
+	menuList, err := sys.MenuService.MenuList(c)
 	if err != nil {
 		jsonresp.JsonFailWithMessage(err.Error(), c)
 		return

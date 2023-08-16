@@ -2,13 +2,11 @@ package service
 
 import (
 	"gincms/app"
-	"gincms/app/common/comservice"
 	"gincms/app/http/adminapi/types"
 	"gincms/app/model"
 	"gincms/pkg"
 	"gincms/pkg/jwt"
 	"github.com/gin-gonic/gin"
-	"github.com/spf13/cast"
 	"go.uber.org/zap"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
@@ -17,14 +15,6 @@ import (
 var PublicService = new(publicService)
 
 type publicService struct {
-}
-
-// LoginCaptchaEnabled 是否打开验证码登录
-func (p publicService) LoginCaptchaEnabled(keyName string) bool {
-	if v, ok := comservice.GetParam(keyName); ok {
-		return cast.ToBool(v)
-	}
-	return false
 }
 
 // Login 用户登录逻辑

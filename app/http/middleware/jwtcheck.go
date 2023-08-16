@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"gincms/app/common/auth"
 	"gincms/pkg/jsonresp"
 	"gincms/pkg/jwt"
 	"github.com/gin-gonic/gin"
@@ -17,8 +18,21 @@ func JWTCheck() gin.HandlerFunc {
 			c.Abort()
 			return
 		} else {
-			c.Set("uid", cast.ToInt64(jwtStruct.UserID))
-			//记录排除GET的操作日志
+			uid := cast.ToInt64(jwtStruct.UserID)
+			c.Set("uid", uid)
+			/************检查是否有权限访问***************/
+			allow, err := auth.AllowCurrentPath(c, uid)
+			if err != nil {
+				jsonresp.JsonResult(http.StatusForbidden, gin.H{}, err.Error(), c)
+				c.Abort()
+				return
+			}
+			if !allow {
+				jsonresp.JsonResult(http.StatusForbidden, gin.H{}, "没有权限访问此操作", c)
+				c.Abort()
+				return
+			}
+			/************检查是否有权限访问 end***************/
 		}
 		c.Next()
 	}

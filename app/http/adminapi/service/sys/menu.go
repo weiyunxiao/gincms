@@ -91,10 +91,10 @@ func (m *menuService) UpdateMenu(c *gin.Context, req *types.MenuAddSaveReq) (err
 }
 
 // MenuList 系统所有菜单-树结构列表
-func (m *menuService) MenuList(c *gin.Context, typeParam int) (menuList []model.SysMenu, err error) {
+func (m *menuService) MenuList(c *gin.Context) (menuList []model.SysMenu, err error) {
 	menuList = make([]model.SysMenu, 0)
 	selectFields := "id,pid,name,url,type,open_style,icon,authority,sort,create_time"
-	err = app.DB().Select(selectFields).Where("deleted=0 and type=?", typeParam).Order("sort").Find(&menuList).Error
+	err = app.DB().Select(selectFields).Where("deleted=0").Order("sort").Find(&menuList).Error
 	if err != nil {
 		app.Logger.Error("sql错误", zap.String("reqKey", pkg.GetReqKey(c)), zap.Error(err))
 		return

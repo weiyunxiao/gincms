@@ -18,11 +18,8 @@ func AdminApiRouter(route *gin.RouterGroup, routeNeedJwt *gin.RouterGroup) {
 	routeNeedJwt.GET("sys/user_info", sysController.UserCtl.Info)           //登录进入后，获取用户信息
 	routeNeedJwt.GET("sys/menu_authority", sysController.MenuCtl.Authority) //获取用户的权限
 	routeNeedJwt.GET("sys/menu_nav", sysController.MenuCtl.Nav)             //获取用户的菜单
+	routeNeedJwt.POST("sys/auth_logout", sysController.AuthCtl.Logout)      //用户退出
 	/************后台系统进入前端需要调用的 end***************/
-
-	/************auth相关***************/
-	routeNeedJwt.POST("sys/auth_logout", sysController.AuthCtl.Logout) //用户退出
-	/************auth相关 end***************/
 
 	/************岗位管理***************/
 	routeNeedJwt.POST("sys/post", sysController.PostCtl.AddPost)      //添加一个岗位
