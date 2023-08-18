@@ -18,8 +18,7 @@ type fileManageService struct {
 
 // UploadFile 上传文件
 func (f *fileManageService) UploadFile(c *gin.Context, req *typescom.FileUploadReq) (filePath string, fileName string, err error) {
-	fileType := app.Config.App.OssType
-	var fileManage = filepkg.CreateFileManage(fileType)
+	var fileManage = filepkg.CreateFileManage()
 	filePath, fileName, size, sizeTip, err := fileManage.UploadFile(c, req.File)
 	if err != nil {
 		return

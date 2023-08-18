@@ -60,9 +60,8 @@ func (f *fileManageCtl) DownFile(c *gin.Context) {
 
 // DirList 目录列表
 func (f *fileManageCtl) DirList(c *gin.Context) {
-	fileType := app.Config.App.OssType
 	baseDir := app.Config.App.UploadDir
-	var fileManage = filepkg.CreateFileManage(fileType)
+	var fileManage = filepkg.CreateFileManage()
 	list, err := fileManage.DirList(baseDir)
 	if err != nil {
 		jsonresp.JsonFailWithMessage(err.Error(), c)
@@ -75,8 +74,7 @@ func (f *fileManageCtl) DirAndFileList(c *gin.Context) {
 	dirName := c.DefaultQuery("dirName", "")
 	baseDir := app.Config.App.UploadDir + "/" + dirName
 
-	fileType := app.Config.App.OssType
-	var fileManage = filepkg.CreateFileManage(fileType)
+	var fileManage = filepkg.CreateFileManage()
 	list, err := fileManage.DirAndFileList(baseDir)
 	if err != nil {
 		jsonresp.JsonFailWithMessage(err.Error(), c)

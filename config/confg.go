@@ -17,6 +17,7 @@ type App struct {
 	LogPath            string `mapstructure:"LogPath"`
 	OssType            string `mapstructure:"OssType"`
 	UploadDir          string `mapstructure:"UploadDir"`
+	UploadMaxM         int64  `mapstructure:"UploadMaxM"`         //文件上传限制多少M
 	LogParamShowClient bool   `mapstructure:"LogParamShowClient"` //参数绑定错误是否显示回前端
 	LogParamErr        bool   `mapstructure:"LogParamErr"`        //是否记录参数绑定错误到文件
 

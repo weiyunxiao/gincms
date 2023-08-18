@@ -1,6 +1,8 @@
 package types
 
-import "gincms/app/common/typescom"
+import (
+	"gincms/app/common/typescom"
+)
 
 // LoginReq 登录请求体
 type LoginReq struct {
@@ -176,4 +178,11 @@ type AttachmentPageReq struct {
 	Name     string `json:"name" form:"name" binding:"max=50"`
 	Platform string `json:"platform" form:"platform" binding:"max=30"`
 	typescom.PageOrderCommonReq
+}
+
+// UpdateSelfInfoReq 更新头像及密码
+type UpdateSelfInfoReq struct {
+	Avatar      string `json:"avatar" form:"avatar"`
+	Password    string `json:"password" form:"password" binding:"required,min=6"`
+	NewPassword string `json:"newPassword" form:"newPassword" binding:"required,min=6"`
 }

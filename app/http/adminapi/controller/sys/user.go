@@ -130,3 +130,17 @@ func (u *userCtl) Info(c *gin.Context) {
 	}
 	jsonresp.JsonOkWithData(user, c)
 }
+
+// UpdateSelfInfo 更新自己的信息
+func (u *userCtl) UpdateSelfInfo(c *gin.Context) {
+	var req types.UpdateSelfInfoReq
+	if err := c.ShouldBind(&req); err != nil {
+		jsonresp.JsonFailParame(c, err)
+		return
+	}
+	if err := sys.UserService.UpdateSelfInfo(c, &req); err != nil {
+		jsonresp.JsonFail(c)
+		return
+	}
+	jsonresp.JsonOk(c)
+}

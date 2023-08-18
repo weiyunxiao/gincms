@@ -265,3 +265,20 @@ func (u *userService) Info(c *gin.Context, uid int64) (user map[string]any, err 
 	}
 	return
 }
+
+// UpdateSelfInfo 更新自己的信息
+func (u *userService) UpdateSelfInfo(c *gin.Context, req *types.UpdateSelfInfoReq) (err error) {
+	password, err := bcrypt.GenerateFromPassword([]byte(req.Password), 14)
+	if err != nil {
+		app.Logger.Error("pwd加密出错", zap.String("reqKey", pkg.GetReqKey(c)), zap.Error(err))
+		return errors.New("无法更新用户信息")
+	}
+	err = app.DB().Model(&model.SysUser{}).Where("id=?", c.GetInt64("uid")).Updates(map[string]any{
+		"avatar":   req.Avatar,
+		"password": password,
+	}).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		app.Logger.Error("sql错误", zap.String("reqKey", pkg.GetReqKey(c)), zap.Error(err))
+	}
+	return
+}

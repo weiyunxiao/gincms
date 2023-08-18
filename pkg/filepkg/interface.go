@@ -1,6 +1,7 @@
 package filepkg
 
 import (
+	"gincms/app"
 	"github.com/gin-gonic/gin"
 	"github.com/samber/lo"
 	"github.com/spf13/cast"
@@ -16,7 +17,8 @@ type FileManageServiceInterface interface {
 }
 
 // CreateFileManage 工厂模式创建对应实例
-func CreateFileManage(fileType string) FileManageServiceInterface {
+func CreateFileManage() FileManageServiceInterface {
+	fileType := app.Config.App.OssType
 	switch fileType {
 	case "local":
 		return &LocalFileManage{}

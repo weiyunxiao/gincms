@@ -7,12 +7,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// gin初始化
+// CreateGinServer gin初始化
 func CreateGinServer() *gin.Engine {
 	if !pkg.IsDevEnv() {
 		gin.SetMode(gin.ReleaseMode)
 	}
 	r := gin.New()
+	//设置上传文件大小限制
+	r.MaxMultipartMemory = app.Config.App.UploadMaxM << 20
 	r.Use(gin.Recovery())
 	//跨域中间件
 	if app.Config.Http.UseCrossMiddleware {

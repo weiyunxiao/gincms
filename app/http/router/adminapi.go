@@ -19,6 +19,7 @@ func AdminApiRouter(route *gin.RouterGroup, routeNeedJwt *gin.RouterGroup) {
 	routeNeedJwt.GET("sys/menu_authority", sysController.MenuCtl.Authority) //获取用户的权限
 	routeNeedJwt.GET("sys/menu_nav", sysController.MenuCtl.Nav)             //获取用户的菜单
 	routeNeedJwt.POST("sys/auth_logout", sysController.AuthCtl.Logout)      //用户退出
+	routeNeedJwt.PUT("sys/user_info", sysController.UserCtl.UpdateSelfInfo) //修改用户自身的一些信息，比如修改头像和修改密码
 	/************后台系统进入前端需要调用的 end***************/
 
 	/************岗位管理***************/
