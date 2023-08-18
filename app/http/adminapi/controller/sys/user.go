@@ -139,7 +139,7 @@ func (u *userCtl) UpdateSelfInfo(c *gin.Context) {
 		return
 	}
 	if err := sys.UserService.UpdateSelfInfo(c, &req); err != nil {
-		jsonresp.JsonFail(c)
+		jsonresp.JsonFailWithMessage(err.Error(), c)
 		return
 	}
 	jsonresp.JsonOk(c)

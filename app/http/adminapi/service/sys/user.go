@@ -268,7 +268,23 @@ func (u *userService) Info(c *gin.Context, uid int64) (user map[string]any, err 
 
 // UpdateSelfInfo 更新自己的信息
 func (u *userService) UpdateSelfInfo(c *gin.Context, req *types.UpdateSelfInfoReq) (err error) {
-	password, err := bcrypt.GenerateFromPassword([]byte(req.Password), 14)
+	var user model.SysUser
+	err = app.DB().Select("id,password").Where("id=?", c.GetInt64("uid")).Take(&user).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		app.Logger.Error("sql错误", zap.String("reqKey", pkg.GetReqKey(c)), zap.Error(err))
+		return
+	}
+	if user.ID == 0 {
+		err = errors.New("你修改的用户不存在")
+		return
+	}
+	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Password))
+	if err != nil {
+		err = errors.New("用户原密码不正确")
+		return
+	}
+
+	password, err := bcrypt.GenerateFromPassword([]byte(req.NewPassword), 14)
 	if err != nil {
 		app.Logger.Error("pwd加密出错", zap.String("reqKey", pkg.GetReqKey(c)), zap.Error(err))
 		return errors.New("无法更新用户信息")
@@ -277,8 +293,9 @@ func (u *userService) UpdateSelfInfo(c *gin.Context, req *types.UpdateSelfInfoRe
 		"avatar":   req.Avatar,
 		"password": password,
 	}).Error
-	if err != nil && err != gorm.ErrRecordNotFound {
+	if err != nil {
 		app.Logger.Error("sql错误", zap.String("reqKey", pkg.GetReqKey(c)), zap.Error(err))
+		return
 	}
 	return
 }

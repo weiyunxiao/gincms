@@ -10,6 +10,7 @@ import (
 	"go.uber.org/zap"
 	"mime/multipart"
 	"os"
+	"strings"
 )
 
 type LocalFileManage struct{}
@@ -80,6 +81,7 @@ func (f *LocalFileManage) UploadFile(c *gin.Context, file *multipart.FileHeader)
 		app.Logger.Error("保存文件失败:", zap.Error(err))
 		return
 	}
+	filePath = strings.TrimSuffix(app.Config.Http.WebSiteUrl, "/") + "/" + dirName + fileName
 	size = file.Size
 	sizeTip = fmtutil.SizeToString(cast.ToUint64(size))
 	return

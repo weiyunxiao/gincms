@@ -183,6 +183,6 @@ type AttachmentPageReq struct {
 // UpdateSelfInfoReq 更新头像及密码
 type UpdateSelfInfoReq struct {
 	Avatar      string `json:"avatar" form:"avatar"`
-	Password    string `json:"password" form:"password" binding:"required,min=6"`
-	NewPassword string `json:"newPassword" form:"newPassword" binding:"required,min=6"`
+	Password    string `json:"password" form:"password" binding:"required,min=4"`
+	NewPassword string `json:"newPassword" form:"newPassword" binding:"required,min=4"`
 }
