@@ -8,8 +8,11 @@ import (
 	"gincms/app/model"
 	"gincms/pkg"
 	"github.com/gin-gonic/gin"
+	"github.com/samber/lo"
+	"github.com/sourcegraph/conc/pool"
 	"go.uber.org/zap"
 	"strings"
+	"sync"
 )
 
 // AllowCurrentPath 检查是否有权限访问当前路由
@@ -133,4 +136,66 @@ func GetUserMenuIDArr(c *gin.Context, roleIDArr []int) (menuIdArr []int, err err
 		return
 	}
 	return
+}
+
+// GetUserAuth 获取用户的权限列表
+func GetUserAuth(c *gin.Context, uid int64) (endAuthArr []string, err error) {
+	value, err := comservice.GetParam("needAuthButNeedAllow")
+	if err != nil {
+		return
+	}
+	endAuthArr = append(endAuthArr, strings.Split(value, ",")...)
+	authArr := make([]string, 0)
+	user, err := comservice.FindUserByUid(c, uid)
+	if user.SuperAdmin == 1 {
+		err = app.DB().Model(&model.SysMenu{}).Distinct("authority").Where("authority<>'' and deleted=0").Find(&authArr).Error
+		if err != nil {
+			app.Logger.Error("sql错误", zap.String("reqKey", pkg.GetReqKey(c)), zap.Error(err))
+			return
+		}
+	} else {
+		/************如果不是超级管理员***************/
+		var roleIdArr []int
+		//1.获取用户的角色id
+		roleIdArr, err = GetUserRoleIDArr(c, uid)
+		if err != nil {
+			return
+		}
+		if len(roleIdArr) == 0 {
+			return authArr, errors.New("暂时没有分配角色给这个用户")
+		}
+		//2.获取对应的菜单id
+		var menuIdArr []int
+		menuIdArr, err = GetUserMenuIDArr(c, roleIdArr)
+		if err != nil {
+			return
+		}
+		if len(menuIdArr) == 0 {
+			return authArr, errors.New("暂时没有分配权限给这个用户")
+		}
+		err = app.DB().Model(&model.SysMenu{}).Distinct("authority").Where("authority<>'' and deleted=0 and id in ?", menuIdArr).Find(&authArr).Error
+		if err != nil {
+			app.Logger.Error("sql错误", zap.String("reqKey", pkg.GetReqKey(c)), zap.Error(err))
+			return
+		}
+
+		/************如果不是超级管理员 end***************/
+	}
+
+	if len(authArr) > 0 {
+		var mut sync.Mutex
+		p := pool.New().WithMaxGoroutines(10)
+		for _, elem := range authArr {
+			v := elem
+			p.Go(func() {
+				authArrV := strings.Split(v, ",")
+				mut.Lock()
+				endAuthArr = append(endAuthArr, authArrV...)
+				mut.Unlock()
+			})
+		}
+		p.Wait()
+		endAuthArr = lo.Uniq(endAuthArr)
+	}
+	return endAuthArr, nil
 }

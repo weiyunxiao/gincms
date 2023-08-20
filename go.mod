@@ -15,6 +15,7 @@ require (
 	github.com/mojocn/base64Captcha v1.3.5
 	github.com/patrickmn/go-cache v2.1.0+incompatible
 	github.com/samber/lo v1.38.1
+	github.com/sourcegraph/conc v0.3.0
 	github.com/spf13/cast v1.5.1
 	github.com/spf13/viper v1.16.0
 	go.uber.org/zap v1.24.0
