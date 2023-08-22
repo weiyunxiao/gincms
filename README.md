@@ -62,7 +62,7 @@ cd gincms
 
 2. 配置好数据库信息
 在mysql服务器上新建"gincms"数据库,编码选择utf8mb4
-导入db/文件夹下的db.sql文件
+导入db/gincms.sql文件
 
 3.  整理配置文件
 复制config.yaml.example一份,将新的复制文件重命名config.yaml,并修改其中相关配置信息(例如:==mysql配置信息==)
@@ -74,6 +74,20 @@ cp config.yaml.example config.ymal
 ```
 go run ./main.go
 ```
+#### gincms后台管理前端开发环境安装教程
+1. 进入根目录下的web目录,例如:
+```
+cd web
+```
+2. 执行 npm install安装依赖,例如:
+```
+npm install
+```
+3. 运行开发环境,例如:
+```
+npm run dev
+```
+
 
 #### 使用说明
 
