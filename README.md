@@ -37,11 +37,6 @@ maku-admin是基于Vue3、TypeScript、Element Plus、Vue Router、Pinia、Axios
 
 
 无论是个人、团队、或是企业，都能够使用gincms助力相关应用的开发
-####  演示和文档
-| 类型 | 链接 |
-| -------- | -------- |
-| 文档及官网地址 | http://www.gincms.com/ |
-| 演示地址  | http://webdemo.gincms.com/ (账号:admin,密码:admin)|
 
 
 
