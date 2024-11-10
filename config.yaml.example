@@ -12,6 +12,7 @@ App:
   UploadMaxM: 8 #文件上传限制多少M
   LogParamShowClient: false #前端调用接是地,参数错误详细内容是否回显给前端
   LogParamErr: false #是否记录参数错误日志(warn级别)
+  OpenRedis: false #是否开启redis
 Http:
   WebSiteUrl: "http://localhost:8066" #api服务外网访问的url-目前用于upload文件夹中的图片链接拼接
   AdminApiPort: ":8066" #端口
@@ -38,5 +39,7 @@ DBDefineList:
 #    MaxIdleConns: 10
 #    MaxOpenConns: 100
 Redis:
-  host: 127.0.0.1
-  port: 6379
+  Host: 127.0.0.1
+  Port: 6379
+  Pwd:
+  Dbuse: 0

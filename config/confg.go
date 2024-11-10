@@ -6,6 +6,7 @@ type Config struct {
 	PathInfo     PathInfo
 	AdminCaptcha AdminCaptcha  `mapstructure:"AdminCaptcha"`
 	DBDefineList map[string]DB `mapstructure:"DBDefineList"`
+	Redis        Redis         `mapstructure:"Redis"`
 }
 type App struct {
 	Name                string   `mapstructure:"Name"`
@@ -20,7 +21,7 @@ type App struct {
 	UploadMaxM         int64  `mapstructure:"UploadMaxM"`         //文件上传限制多少M
 	LogParamShowClient bool   `mapstructure:"LogParamShowClient"` //参数绑定错误是否显示回前端
 	LogParamErr        bool   `mapstructure:"LogParamErr"`        //是否记录参数绑定错误到文件
-
+	OpenRedis          bool   `mapstructure:"OpenRedis"`          //是否开启redis
 }
 
 type Http struct {
@@ -49,4 +50,10 @@ type AdminCaptcha struct {
 	ImgHeight       int `mapstructure:"ImgHeight"`
 	LimitCaptchaNum int `mapstructure:"LimitCaptchaNum"`
 	LimitTimeOut    int `mapstructure:"LimitTimeOut"` //秒
+}
+type Redis struct {
+	Host  string `mapstructure:"Host"`
+	Port  int    `mapstructure:"Port"`
+	Pwd   string `mapstructure:"Pwd"`
+	Dbuse int    `mapstructure:"Dbuse"`
 }

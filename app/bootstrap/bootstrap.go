@@ -7,18 +7,23 @@ import (
 	"gincms/app/bootstrap/internal"
 	"gincms/pkg"
 	"gincms/pkg/util"
-	"github.com/gookit/goutil/fsutil"
-	"github.com/patrickmn/go-cache"
-	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
-	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
 	"log"
 	"os"
 	"path/filepath"
 	"time"
 
+	"github.com/gookit/goutil/fsutil"
+	"github.com/patrickmn/go-cache"
+	"github.com/redis/go-redis/v9"
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
+	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
+
 	"github.com/fsnotify/fsnotify"
+	"github.com/go-redsync/redsync/v4"
+	"github.com/go-redsync/redsync/v4/redis/goredis/v9"
+	"github.com/spf13/cast"
 	"github.com/spf13/viper"
 	"gorm.io/driver/mysql"
 )
@@ -30,6 +35,9 @@ func AppInit() {
 	initZap()        //日志组件
 	InitDB()         //初始化DB列表
 	InitLocalCache() //初始化本地缓存
+	if app.Config.App.OpenRedis {
+		InitRedis()
+	}
 }
 
 // InitConfig 使用viper处理应用目录下的config.yaml
@@ -118,4 +126,15 @@ func initZap() {
 	cores := internal.Zap.GetZapCores()
 	loggerObj := zap.New(zapcore.NewTee(cores...))
 	app.Logger = loggerObj.WithOptions(zap.AddCaller())
+}
+
+// InitRedis 初始化redis
+func InitRedis() {
+	app.Redis = redis.NewClient(&redis.Options{
+		Addr:     app.Config.Redis.Host + ":" + cast.ToString(app.Config.Redis.Port),
+		Password: app.Config.Redis.Pwd,
+		DB:       app.Config.Redis.Dbuse, // use default DB
+	})
+	pool := goredis.NewPool(app.Redis) // or, pool := redigo.NewPool(...)
+	app.RedisLocker = redsync.New(pool)
 }
